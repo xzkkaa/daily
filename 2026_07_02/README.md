@@ -40,10 +40,44 @@
 - ✅ pip 升级至最新版
 - ❌ `pip install texteller` 因 opencv-python-headless 下载哈希校验失败（网络不稳定）
 
+### 5. 远程操作台式机使用 Claude 方案
+
+**目标**：在性能较弱的笔记本电脑上，通过 SSH 远程操作高性能台式机运行 Claude Code。
+
+**笔记本电脑环境**：
+- IP：100.83.159.45（公网） / 10.141.89.238（内网）
+- SSH 客户端：OpenSSH 10.3p1
+- 443 端口可达（22 端口被封锁）
+
+**方案设计**：
+
+| 层级 | 方案 | 适用场景 |
+|------|------|----------|
+| 局域网 | SSH 直连台式机 IP | 同一 WiFi/路由器下 |
+| 异地组网 | Tailscale（免费）| 不在同一网络 |
+| 备选 | frp / ZeroTier / Cloudflare Tunnel | 特殊网络环境 |
+
+**操作流程**：
+1. 台式机运行 `setup_desktop.ps1` → 开启 SSH Server
+2. 两台电脑都装 Tailscale → 组成虚拟局域网
+3. 笔记本 `ssh 用户名@台式机IP` → 进入台式机终端
+4. 在台式机上运行 `claude` → 享受高性能
+
+**本机已完成**：
+- SSH 客户端配置就绪
+- 创建了 `setup_desktop.ps1`（台式机一键开启 SSH）
+- 创建了 `connect.sh`（笔记本连接脚本）
+
+**待台式机端操作**：运行 `setup_desktop.ps1`，然后安装 Tailscale 组网。
+
 ## 项目结构
 
 ```
 2026_07_02/
 ├── README.md
-└── test_images/
+├── test_images/
+└── remote-claude/
+    ├── setup_desktop.ps1      # 台式机 SSH 服务端配置脚本
+    ├── connect.sh             # 笔记本连接脚本
+    └── ssh_config_template    # SSH 客户端配置模板
 ```

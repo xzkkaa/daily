@@ -1,0 +1,18 @@
+# ============================================
+# 放入 C:\Users\Public\.ssh\config（笔记本电脑）
+# 或者 ~/.ssh/config
+# ============================================
+
+# === 方案A: 局域网直连 ===
+Host desktop
+    HostName 这里填台式机IP
+    User 这里填台式机用户名
+    # 如果22端口不通，换443:
+    # Port 443
+    ForwardAgent yes
+
+# === 方案B: Tailscale 组网后 ===
+Host desktop-ts
+    HostName 这里填台式机的Tailscale IP(100.x.x.x)
+    User 这里填台式机用户名
+    ForwardAgent yes
